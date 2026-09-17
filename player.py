@@ -7,6 +7,7 @@ from constants import PLAYER_SPEED
 from constants import PLAYER_SHOOT_SPEED
 from constants import PLAYER_SHOOT_COOLDOWN_SECONDS
 from shot import Shot
+from sounds import shoot_sound
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -53,5 +54,6 @@ class Player(CircleShape):
             if self.shot_cooldown_timer > 0:
                 pass
             else:
+                shoot_sound.play()
                 self.shot_cooldown_timer = PLAYER_SHOOT_COOLDOWN_SECONDS
                 self.shoot()

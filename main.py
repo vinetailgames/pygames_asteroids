@@ -7,6 +7,7 @@ from player import Player
 from asteroid import Asteroid
 from shot import Shot
 from asteroidfield import AsteroidField
+from sounds import play_background_music, explosion_sound
 
 def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
@@ -32,6 +33,8 @@ def main():
     player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     asteroid_field = AsteroidField()
 
+    play_background_music()
+
     while True:
         log_state()
         for event in pygame.event.get():
@@ -46,6 +49,7 @@ def main():
         for asteroid in asteroids:
             if player.collides_with(asteroid):
                 log_event("player_hit")
+                explosion_sound.play()
                 print("Game over!")
                 sys.exit()
         for asteroid in asteroids:
@@ -54,6 +58,7 @@ def main():
                     log_event("asteroid_shot")
                     asteroid.split()
                     shot.kill()
+                    explosion_sound.play()
                 
 
 
