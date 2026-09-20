@@ -38,6 +38,11 @@ class Player(CircleShape):
     def shoot(self) -> pygame.Vector2:
         shot = Shot(self.position.x, self.position.y, 0)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+
+    def respawn(self, x, y):
+        self.position = pygame.Vector2(x, y)
+        self.rotation = 0
+        self.shot_cooldown_timer = 0
         
     def update(self, dt:float) -> None:
         keys = pygame.key.get_pressed()
