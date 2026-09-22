@@ -16,6 +16,9 @@ class Lives:
     def is_game_over(self):
         return self.lives <= 0
 
+    def reset(self):
+        self.lives = PLAYER_MAX_LIVES
+
     def draw(self, screen):
         start_x = SCREEN_WIDTH - 30
         start_y = 30

@@ -10,6 +10,7 @@ from asteroidfield import AsteroidField
 from sounds import play_background_music, explosion_sound
 from score import Score
 from lives import Lives
+from gameover import GameOver
 
 def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
@@ -39,8 +40,21 @@ def main():
 
     score = Score()
     lives = Lives()
+    game_over_screen = GameOver()
+    is_game_over = False
 
     while True:
+        if is_game_over:
+            action = game_over_screen.handle_input()
+            if action == "quit":
+                return
+            elif action == "restart":
+                game_over_screen.restart(player, score, lives, asteroids, shots)
+                is_game_over = False
+            game_over_screen.draw(screen)
+            pygame.display.flip()
+            clock.tick(60)
+            continue
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -69,9 +83,9 @@ def main():
                 lives.lose_life()
 
                 if lives.is_game_over():
-                    print("Game over!")
-                    score.reset()
-                    sys.exit()
+                    log_event("game_over")
+                    is_game_over = True
+                    break
                 
                 for a in asteroids:
                     a.kill()
