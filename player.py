@@ -78,3 +78,4 @@ class Player(CircleShape):
         self.position += self.velocity * dt
         decay = max(0, 1 - PLAYER_FRICTION * dt)
         self.velocity *= decay
+        self.wrap_position()
