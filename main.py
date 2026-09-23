@@ -50,6 +50,7 @@ def main():
                 return
             elif action == "restart":
                 game_over_screen.restart(player, score, lives, asteroids, shots)
+                asteroid_field.start_wave(ASTEROIDS_PER_WAVE)
                 is_game_over = False
             game_over_screen.draw(screen)
             pygame.display.flip()
