@@ -88,8 +88,6 @@ def main():
                     is_game_over = True
                     break
                 
-                for a in asteroids:
-                    a.kill()
                 for s in shots:
                     s.kill()
                 player.respawn(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
