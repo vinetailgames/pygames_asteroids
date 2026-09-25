@@ -47,7 +47,7 @@ class GameOver:
         if hasattr(lives, "reset"):
             lives.reset()
 
-        player.respawn(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        player.respawn(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, grant_invincibility=False)
         asteroid_field.start_wave(ASTEROIDS_PER_WAVE)
 
         pygame.mixer.music.stop()

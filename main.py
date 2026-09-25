@@ -79,6 +79,9 @@ def main():
         updatable.update(dt)
         for asteroid in asteroids:
             if player.collides_with(asteroid):
+                if player.is_invincible():
+                    continue
+
                 log_event("player_hit")
                 explosion_sound.play()
                 lives.lose_life()

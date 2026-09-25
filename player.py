@@ -1,14 +1,6 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS
-from constants import LINE_WIDTH
-from constants import PLAYER_TURN_SPEED
-from constants import PLAYER_SPEED
-from constants import PLAYER_SHOOT_SPEED
-from constants import PLAYER_SHOOT_COOLDOWN_SECONDS
-from constants import PLAYER_ACCELERATION
-from constants import PLAYER_MAX_SPEED
-from constants import PLAYER_FRICTION
+from constants import *
 from shot import Shot
 from sounds import shoot_sound
 
@@ -18,6 +10,9 @@ class Player(CircleShape):
         self.rotation = 0
         self.shot_cooldown_timer = 0
         self.velocity = pygame.Vector2(0, 0)
+        self.invincible_timer = 0.0
+        self.blink_timer = 0.0
+        self.visible = True
 
     def triangle(self) -> list[pygame.Vector2]:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -28,6 +23,8 @@ class Player(CircleShape):
         return [a, b, c]
 
     def draw(self, screen):
+        if not self.visible:
+            return
         pygame.draw.polygon(screen, pygame.Color("white"), self.triangle())
 
     def rotate(self, dt):
@@ -51,11 +48,21 @@ class Player(CircleShape):
         shot = Shot(self.position.x, self.position.y, 0)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
 
-    def respawn(self, x, y):
+    def respawn(self, x, y, grant_invincibility=True):
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, 0)
         self.rotation = 0
         self.shot_cooldown_timer = 0
+        if grant_invincibility:
+            self.invincible_timer = INVINCIBILITY_DURATION
+            self.blink_timer = 0.0
+            self.visible = True
+        else:
+            self.invincible_timer = 0.0
+            self.visible = True
+
+    def is_invincible(self) -> bool:
+        return self.invincible_timer > 0
         
     def update(self, dt:float) -> None:
         keys = pygame.key.get_pressed()
@@ -79,3 +86,11 @@ class Player(CircleShape):
         decay = max(0, 1 - PLAYER_FRICTION * dt)
         self.velocity *= decay
         self.wrap_position()
+        if self.invincible_timer > 0:
+            self.invincible_timer -= dt
+            self.blink_timer += dt
+            if self.blink_timer >= INVINCIBILITY_BLINK_INTERVAL:
+                self.visible = not self.visible
+                self.blink_timer = 0.0
+            if self.invincible_timer <= 0:
+                self.visible = True
