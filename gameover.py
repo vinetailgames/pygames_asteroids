@@ -1,5 +1,5 @@
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, ASTEROIDS_PER_WAVE
 from sounds import play_background_music
 
 
@@ -37,7 +37,7 @@ class GameOver:
                     return "quit"
         return None
 
-    def restart(self, player, score, lives, asteroids, shots):
+    def restart(self, player, score, lives, asteroids, shots, asteroid_field):
         for a in asteroids:
             a.kill()
         for s in shots:
@@ -48,6 +48,7 @@ class GameOver:
             lives.reset()
 
         player.respawn(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        asteroid_field.start_wave(ASTEROIDS_PER_WAVE)
 
         pygame.mixer.music.stop()
         play_background_music()

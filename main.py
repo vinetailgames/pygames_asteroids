@@ -1,6 +1,6 @@
 import pygame
 import sys
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT, ASTEROIDS_PER_WAVE
 from logger import log_state
 from logger import log_event
 from player import Player
@@ -49,7 +49,7 @@ def main():
             if action == "quit":
                 return
             elif action == "restart":
-                game_over_screen.restart(player, score, lives, asteroids, shots)
+                game_over_screen.restart(player, score, lives, asteroids, shots, asteroid_field)
                 asteroid_field.start_wave(ASTEROIDS_PER_WAVE)
                 is_game_over = False
             game_over_screen.draw(screen)
