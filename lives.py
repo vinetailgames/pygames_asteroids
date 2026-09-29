@@ -1,10 +1,5 @@
 import pygame
-from constants import (
-    SCREEN_WIDTH,
-    PLAYER_MAX_LIVES,
-    LIFE_ICON_SIZE,
-    LIFE_ICON_SPACING
-)
+from constants import *
 
 class Lives:
     def __init__(self):
@@ -18,6 +13,9 @@ class Lives:
 
     def reset(self):
         self.lives = PLAYER_MAX_LIVES
+
+    def gain_life(self):
+        self.lives = min(self.lives + 1, PLAYER_MAX_LIVES_CAP)
 
     def draw(self, screen):
         start_x = SCREEN_WIDTH - 30
