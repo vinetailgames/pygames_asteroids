@@ -4,6 +4,8 @@ from constants import *
 class Lives:
     def __init__(self):
         self.lives = PLAYER_MAX_LIVES
+        self.icon = pygame.image.load("textures/battleship.png").convert_alpha()
+        self.icon = pygame.transform.scale(self.icon, (LIFE_ICON_SIZE, LIFE_ICON_SIZE))
 
     def lose_life(self):
         self.lives -= 1
@@ -26,10 +28,5 @@ class Lives:
         for i in range(reserve_lives):
             x = start_x - (i * LIFE_ICON_SPACING)
             y = start_y
-
-            points = [
-                (x, y - LIFE_ICON_SIZE // 2),
-                (x + LIFE_ICON_SIZE // 2, y + LIFE_ICON_SIZE),
-                (x - LIFE_ICON_SIZE // 2, y + LIFE_ICON_SIZE)
-            ]
-            pygame.draw.polygon(screen, (255, 255, 255), points, 2)
+            icon_rect = self.icon.get_rect(center=(x, y))
+            screen.blit(self.icon, icon_rect)
